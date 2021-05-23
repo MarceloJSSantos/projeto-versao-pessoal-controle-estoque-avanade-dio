@@ -6,7 +6,7 @@ repositório com a VERSÃO PESSOAL do projeto prático "Controle de Estoque" das
 - Feito até:
   - Projeto - Parte 1: Criando uma API REST com Spring Boot
 
-
+------------
 
 Neste projeto foi desenvolvido um sistema de controle de estoque
 
@@ -36,7 +36,7 @@ Foram desenvolvidas as seguintes tarefas:
 - **Spring Boot (2.4.6)**
   - **Spring Web**
 - **Git/GitHub** para versionamento do código
-- **SQL Server**
+- **SQL Server** Banco de Dados
 - **Docker** para os ambientes do BD
 
 
