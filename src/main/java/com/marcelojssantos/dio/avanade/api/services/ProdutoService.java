@@ -11,12 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProdutoService {
     public List<Produto> findAll(){
-        List<Produto> listaProduto = new ArrayList<Produto>();
-        Produto p1 = new Produto(1, "Produto 1", new Date(), "0123456789", true);
-        Produto p2 = new Produto(2, "Produto 2", new Date(), "9876543210", false);
-        listaProduto.add(p1);
-        listaProduto.add(p2);
-        return listaProduto;
+        return geraListaProdutos();
     }
 
     public void insert(Produto produto){
@@ -29,5 +24,18 @@ public class ProdutoService {
 
     public void delete(Long id){
         System.out.println(">>> DELETADO: " + id);
+    }
+
+    public Produto geraProduto(int id, String ean){
+        return new Produto(id, "Produto " + id, new Date(), ean, false);
+    }
+
+    private List<Produto> geraListaProdutos(){
+        List<Produto> listaProduto = new ArrayList<Produto>();
+        Produto p1 = geraProduto(1, "0123456789");
+        Produto p2 = geraProduto(2, "9876543210");
+        listaProduto.add(p1);
+        listaProduto.add(p2);
+        return listaProduto;
     }
 }

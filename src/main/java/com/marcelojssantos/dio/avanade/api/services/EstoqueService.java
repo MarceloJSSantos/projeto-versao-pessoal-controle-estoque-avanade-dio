@@ -1,30 +1,25 @@
 package com.marcelojssantos.dio.avanade.api.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.marcelojssantos.dio.avanade.api.models.Estoque;
 import com.marcelojssantos.dio.avanade.api.models.Loja;
 import com.marcelojssantos.dio.avanade.api.models.Produto;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EstoqueService {
-    public List<Estoque> findAll(){
-        Produto p1 = new Produto(1, "Produto 1", new Date(), "0123456789", true);
-        Produto p2 = new Produto(2, "Produto 2", new Date(), "9876543210", false);
 
-        Loja l1 = new Loja(1, "Loja 1", false);
-        Loja l2 = new Loja(2, "Loja 2", false);
-        
-        List<Estoque> listaEstoque = new ArrayList<Estoque>();
-        Estoque e1 = new Estoque(p1, l2, 25);
-        Estoque e2 = new Estoque(p2, l1, 15);
-        listaEstoque.add(e1);
-        listaEstoque.add(e2);
-        return listaEstoque;
+    @Autowired
+    private ProdutoService produtoService;
+    @Autowired
+    private LojaService lojaService;
+
+    public List<Estoque> findAll(){
+        return geraListaEstoque();
     }
 
     public void insert(Estoque estoque){
@@ -37,5 +32,24 @@ public class EstoqueService {
 
     public void delete(Long idProduto, Long idLoja){
         System.out.println(">>> DELETADO: " + idProduto + " - " + idLoja);
+    }
+
+    public Estoque geraEstoque(Produto p, Loja l, int quant){
+        return new Estoque(p, l, quant);
+    }
+
+    private List<Estoque> geraListaEstoque(){
+        List<Estoque> listaEstoque = new ArrayList<Estoque>();
+        Estoque e1 = geraEstoque(
+            produtoService.geraProduto(25,
+            "00001595874"),
+            lojaService.geraLoja(18), 118);
+        Estoque e2 = geraEstoque(
+            produtoService.geraProduto(6,
+            "0999878965"),
+            lojaService.geraLoja(12), 35);
+        listaEstoque.add(e1);
+        listaEstoque.add(e2);
+        return listaEstoque;
     }
 }

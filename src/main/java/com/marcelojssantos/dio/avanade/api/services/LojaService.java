@@ -10,12 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LojaService {
     public List<Loja> findAll(){
-        List<Loja> listaLoja = new ArrayList<Loja>();
-        Loja l1 = new Loja(1, "Loja 1", false);
-        Loja l2 = new Loja(2, "Loja 2", false);
-        listaLoja.add(l1);
-        listaLoja.add(l2);
-        return listaLoja;
+        return geraListaLojas();
     }
 
     public void insert(Loja loja){
@@ -28,5 +23,18 @@ public class LojaService {
 
     public void delete(Long id){
         System.out.println(">>> DELETADO: " + id);
+    }
+
+    public Loja geraLoja(int id){
+        return new Loja(id, "Loja " + id, false);
+    }
+
+    private List<Loja> geraListaLojas(){
+        List<Loja> listaLoja = new ArrayList<Loja>();
+        Loja l1 = geraLoja(1);
+        Loja l2 = geraLoja(2);
+        listaLoja.add(l1);
+        listaLoja.add(l2);
+        return listaLoja;
     }
 }
