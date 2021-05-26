@@ -1,11 +1,13 @@
 package com.marcelojssantos.dio.avanade.api.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import com.marcelojssantos.dio.avanade.api.models.Estoque;
 import com.marcelojssantos.dio.avanade.api.models.Loja;
 import com.marcelojssantos.dio.avanade.api.models.Produto;
+import com.marcelojssantos.dio.avanade.api.repository.EstoqueRepository;
+import com.marcelojssantos.dio.avanade.api.repository.LojaRepository;
+import com.marcelojssantos.dio.avanade.api.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,42 +16,36 @@ import org.springframework.stereotype.Service;
 public class EstoqueService {
 
     @Autowired
-    private ProdutoService produtoService;
+    private ProdutoRepository produtoRepository;
     @Autowired
-    private LojaService lojaService;
+    private LojaRepository lojaRepository;
+    @Autowired
+    private EstoqueRepository estoqueRepository;
 
-    public List<Estoque> findAll(){
-        return geraListaEstoque();
+    public Iterable<Estoque> findAll(){
+        return estoqueRepository.findAll();
     }
 
     public void insert(Estoque estoque){
+        estoqueRepository.save(estoque);
         System.out.println(">>> INSERIDO: " + estoque);
     }
 
     public void update(Estoque estoque){
+        estoqueRepository.save(estoque);
         System.out.println(">>> ATUALIZADO: " + estoque);
     }
 
-    public void delete(Long idProduto, Long idLoja){
-        System.out.println(">>> DELETADO: " + idProduto + " - " + idLoja);
-    }
+    public void delete(Integer idProduto, Integer idLoja){
+        Optional<Produto> produto = produtoRepository.findById(idProduto);
+        Optional<Loja> loja = lojaRepository.findById(idLoja);
 
-    public Estoque geraEstoque(Produto p, Loja l, int quant){
-        return new Estoque(p, l, quant);
-    }
-
-    private List<Estoque> geraListaEstoque(){
-        List<Estoque> listaEstoque = new ArrayList<Estoque>();
-        Estoque e1 = geraEstoque(
-            produtoService.geraProduto(25,
-            "00001595874"),
-            lojaService.geraLoja(18), 118);
-        Estoque e2 = geraEstoque(
-            produtoService.geraProduto(6,
-            "0999878965"),
-            lojaService.geraLoja(12), 35);
-        listaEstoque.add(e1);
-        listaEstoque.add(e2);
-        return listaEstoque;
+        if (produto.isPresent() && loja.isPresent()){
+            Optional<Estoque> estoque = estoqueRepository.findByCodigoProdutoAndCodigoLoja(produto.get(), loja.get());
+            estoqueRepository.delete(estoque.get());
+            System.out.println(">>> DELETADO: " + idProduto + " - " + idLoja);
+        } else {
+            System.out.println(">>> NÃO DELETADO: " + idProduto + " - " + idLoja + " - PELO MENOS UM DESSES IDs NÃO FOI ENCONTRADO!");
+        }
     }
 }

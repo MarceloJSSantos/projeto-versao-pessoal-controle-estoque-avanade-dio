@@ -1,7 +1,5 @@
 package com.marcelojssantos.dio.avanade.api.controllers;
 
-import java.util.List;
-
 import com.marcelojssantos.dio.avanade.api.models.Loja;
 import com.marcelojssantos.dio.avanade.api.services.LojaService;
 
@@ -25,7 +23,7 @@ public class LojaController {
     private LojaService lojaService;
 
     @GetMapping
-    public List<Loja> listar(){
+    public Iterable<Loja> listar(){
         return lojaService.findAll();
     }
 
@@ -44,8 +42,7 @@ public class LojaController {
     @DeleteMapping
     @RequestMapping("{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void excluir(@PathVariable Long id){
-        lojaService.delete(id);;
-    }
-    
+    public void excluir(@PathVariable Integer id){
+        lojaService.delete(id);
+    }   
 }

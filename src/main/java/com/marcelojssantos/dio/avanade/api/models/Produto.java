@@ -1,16 +1,42 @@
 package com.marcelojssantos.dio.avanade.api.models;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@Entity
+@Table(name="produtos")
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Produto {
-    private int codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
+    private Integer codigo;
+    @NonNull
     private String descricao;
-    private Date validade;
+    @NonNull
+    private LocalDate validade;
+    @NonNull
     private String ean;
-    private boolean inativo;
+    @NonNull
+    private Boolean inativo;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigoProduto")
+    private List<Estoque> estoque;
 }

@@ -1,40 +1,40 @@
 package com.marcelojssantos.dio.avanade.api.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import com.marcelojssantos.dio.avanade.api.models.Loja;
+import com.marcelojssantos.dio.avanade.api.repository.LojaRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LojaService {
-    public List<Loja> findAll(){
-        return geraListaLojas();
+
+    @Autowired
+    private LojaRepository lojaRepository;
+    
+    public Iterable<Loja> findAll(){
+        return lojaRepository.findAll();
     }
 
     public void insert(Loja loja){
+        lojaRepository.save(loja);
         System.out.println(">>> INSERIDO: " + loja);
     }
 
     public void update(Loja loja){
+        lojaRepository.save(loja);
         System.out.println(">>> ATUALIZADO: " + loja);
     }
 
-    public void delete(Long id){
-        System.out.println(">>> DELETADO: " + id);
-    }
-
-    public Loja geraLoja(int id){
-        return new Loja(id, "Loja " + id, false);
-    }
-
-    private List<Loja> geraListaLojas(){
-        List<Loja> listaLoja = new ArrayList<Loja>();
-        Loja l1 = geraLoja(1);
-        Loja l2 = geraLoja(2);
-        listaLoja.add(l1);
-        listaLoja.add(l2);
-        return listaLoja;
+    public void delete(Integer id){
+        Optional<Loja> loja = lojaRepository.findById(id);
+        if (loja.isPresent()){
+            lojaRepository.delete(loja.get());
+            System.out.println(">>> DELETADO: " + id);
+        } else {
+            System.out.println(">>> NÃO DELETADO: " + id + "- ESSE ID NÃO FOI ENCONTRADO!");
+        }   
     }
 }
